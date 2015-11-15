@@ -6,7 +6,9 @@
 
 using namespace std;
 
+void PartitionIntoLexemes(char *s);
 bool CheckBrackets(char* s) ;
 bool CheckAmoutOperands(char* s);
+bool CheckOperationsInRow(char *s);
 
 #endif

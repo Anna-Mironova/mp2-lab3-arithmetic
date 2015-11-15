@@ -1,7 +1,8 @@
+#include "arithmetic.h"
 int main()
 {
-	char str [256]; 
     int strlen;    //длина строки
+	setlocale(LC_ALL, "Russian");
 
 	
   return 0;
