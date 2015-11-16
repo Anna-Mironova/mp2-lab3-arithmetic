@@ -2,8 +2,64 @@
 
 void PartitionIntoLexemes(char *s)
 {
-	
+	int k=0; int l=0; int m=0;
+	int len = strlen(s);
+	int type[256];
+	double digits[256];
+	char vars[256];
+	char signs[256];
 
+	for (int i=0;i<256;i++)
+	{
+		type[i]=0;
+		digits[i]=0;
+	}
+		
+	for (int i=0;i<len;i++)
+		type[i]=DeterminationType(s[i]);
+	for (int i=0;i<len;i++)
+	{
+		if(type[i]==1)
+		{
+			digits[k] = std::stod(s[i]) ;
+			k++;
+		}
+		else if(type[i]==2)
+		{
+			vars[l]=s[i];
+			l++;
+		}
+		else if (type[i]==3)
+		{
+			signs[m]=s[i];
+			m++;
+		}
+	}
+}
+int DeterminationType(char s) //type1-цифра; type2-буква ; type3-знаки операций;
+{
+	int flag=0;
+	char sign[]="-+*/()";
+	if ( isdigit(s) )
+		return 1;
+	else if ( isalpha(s) )
+		return 2;
+	else 
+	{
+		for(int i=0;i<6;i++)
+			if (s==sign[i])
+			{
+				flag=1;
+				break;
+			}
+		if(flag ==1)
+			return 3;
+		else 
+		{
+			cout << "Неопознанный символ" <<endl;
+			return 0;
+		}
+	}
 }
 bool CheckBrackets(char* s)//проверка расставления скобок
 {
