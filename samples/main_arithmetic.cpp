@@ -1,20 +1,35 @@
 #include "arithmetic.h"
-
+#include <iostream>
+#define MAX_SIZE 256;
 int main()
 {
-    int len;    //длина строки
-	int size=MAX_SIZE;
-	char str[]="5+6*(a+b*2)";
-	char * nstr ;
-	int s;
-	
-
-
+	char str[]="5+6.5*(a+b*2)";
+	int Size=MAX_SIZE;
 	setlocale(LC_ALL, "Russian");
-	
-	nstr = new char [size];
-	nstr=ConvertInPostfixNotation(str);
-	
 
+	if(CheckStr(str)!=true)
+		cout << "Выражение некорректно! Введите выражение заново " <<endl;
+	else
+	{
+		double result;
+		char * vars;
+		double *numbers;
+		char * newstr1 ;
+		char * newstr2 ;
+
+		numbers=new double[Size];
+		InputValues(str);
+		ArrayOfNumbers(str,numbers);
+		for (int i=0;i<3;i++)
+			cout << numbers[i] << endl;
+		newstr1 = new char [Size];
+		ChangeOperand(str,newstr1);
+		cout << newstr1 << endl;
+		newstr2 = new char [Size];
+		ConvertInPostfixNotation(newstr1,newstr2);
+		cout << newstr2 << endl;	
+		result=EvaluationOfExpression(newstr2,numbers);
+		cout << "Результат выражения = " << result <<endl;
+	}
   return 0;
 }

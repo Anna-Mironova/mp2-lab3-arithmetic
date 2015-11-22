@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string>
 #include "stack.h"
-#define MAX_SIZE 256;
+
 using namespace std;
 
 int DeterminationType(char s);
@@ -22,13 +22,13 @@ bool CheckStr(char *s);
 int Prioritet(char s);
 bool IsSign(char s);
 bool IsOperation(char s);
-char* FindVars (char *s);
+void FindVars (const char *s, int * res);
 void InputValues(char *s);
-char* ChangeOperand(char *s);
-double* ArrayOfNumbers(char *s);
+void ChangeOperand(const char *s,char *res);
+void ArrayOfNumbers(const char *s,double *res);
 double GetNumber(char *s);
 
-char* ConvertInPostfixNotation(char* s);
+void ConvertInPostfixNotation(const char* s,char *res);
 double EvaluationOfExpression(char *s,double *arr);
 
 #endif
