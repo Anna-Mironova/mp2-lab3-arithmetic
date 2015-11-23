@@ -13,7 +13,7 @@ using namespace std;
 int DeterminationType(char s);
 
 bool CheckBrackets(char* s) ;
-bool CheckAmoutOperands(char* s);
+bool CheckAmountOperands(char* s);
 bool CheckOperationsInRow(char *s);
 bool CheckPlaceDotsOrCommas(char *s);
 bool CheckCorrectnessOfSymbols(char *s);

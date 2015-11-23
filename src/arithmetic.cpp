@@ -59,7 +59,7 @@ bool CheckBrackets(char* s)//проверка расставления скобок
 		}
 	}
 }
-bool CheckAmoutOperands(char* s)// проверка на недостаток операндов
+bool CheckAmountOperands(char* s)// проверка на недостаток операндов
 {
 	int len=strlen(s);
 	if (IsOperation(s[0]))
@@ -143,7 +143,7 @@ bool CheckCorrectnessOfSymbols(char *s)//проверка на наличие некорректных символ
 }
 bool CheckStr(char* s)//проверка всех условий 
 {
-	if((CheckBrackets(s))&&(CheckAmoutOperands(s))&&(CheckOperationsInRow(s))&&(CheckPlaceDotsOrCommas(s))&&(CheckCorrectnessOfSymbols(s)))
+	if((CheckBrackets(s))&&(CheckAmountOperands(s))&&(CheckOperationsInRow(s))&&(CheckPlaceDotsOrCommas(s))&&(CheckCorrectnessOfSymbols(s)))
 		return true;
 	else
 		return false;
@@ -257,6 +257,7 @@ void InputValues(char *s) //функция для ввода значений переменных
 		cout <<endl;
 		i++;
 	}
+	delete []num;
 }
 
 void ChangeOperand(const char *s,char *res)//изменение операндов на более удобные

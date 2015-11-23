@@ -30,6 +30,9 @@ int main()
 		cout << newstr2 << endl;	
 		result=EvaluationOfExpression(newstr2,numbers);
 		cout << "Результат выражения = " << result <<endl;
+		delete []numbers;
+		delete []newstr1;
+		delete []newstr2;
 	}
   return 0;
 }
