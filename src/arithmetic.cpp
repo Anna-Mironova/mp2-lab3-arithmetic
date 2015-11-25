@@ -1,7 +1,7 @@
-#include "C:\Users\Анна\Documents\mp2-lab3-arithmetic\include\arithmetic.h"
+#include "arithmetic.h"
 using namespace std;
 
-int DeterminationType(char s) //type1-цифра; type2-буква ; type3-знаки операций ; type 4 - точка или запятая double
+int DeterminationType(char s) //type1-цифра; type2-буква ; type3-знаки операций ; type 4 - точка или запятая double; type 5 -пробел
 {
 	if ( isdigit(s) )
 		return 1;
@@ -11,9 +11,12 @@ int DeterminationType(char s) //type1-цифра; type2-буква ; type3-знаки операций 
 		return 3;
 	else if((s=='.')||(s==','))
 		return 4;
+	else if(s==' ')
+		return 5;
 	else 
 		return 0;
 }
+
 bool CheckBrackets(char* s)//проверка расставления скобок
 {
 	TStack<int> br(256);
@@ -231,6 +234,7 @@ void FindVars (const char *s, int * res)//нахождение переменных в формуле
 			j++;
 		}
 }
+
 void InputValues(char *s) //функция для ввода значений переменных
 {
 	int *num;
@@ -260,74 +264,6 @@ void InputValues(char *s) //функция для ввода значений переменных
 	delete []num;
 }
 
-void ChangeOperand(const char *s,char *res)//изменение операндов на более удобные
-{
-	char m[]="0123456789";
-	int k=0; int n=0 ; int p=0; int l=0;
-	int len=strlen(s);
-	int type[256];
-	for (int j=0;j<len;j++)
-		type[j]=DeterminationType(s[j]);
-	for (int i=0;i<len;)
-	{
-		if ((type[i]==3)||(type[i]==2))
-		{
-			res[k]=s[i];
-			i++;
-			
-		}
-		else if ((type[i]==1))
-		{
-			p=i+1;
-			while ((type[p]!=3)&&(type[p]!=2))
-			{
-				p++;
-			}
-			l=p-i;	
-			i+=l;
-			res[k]=m[n];
-			n++;
-		}
-		k++;
-	}	
-	res[k]='\0';
-}
-void ArrayOfNumbers(const char *s,double *res)//массив операндов 
-{
-	int i=0; int k=0; int m=0;
-	for (int p=0;p<256;p++)
-		res[p]=0;
-	int len=strlen(s);
-	int type[256];
-	for (int j=0;j<len;j++)
-		type[j]=DeterminationType(s[j]);
-	while(s[i]!='\0')
-	{
-		if(type[i]==1)
-		{ 
-			double number;
-			int l;
-			char str[256];
-			k=i+1;
-			while ((type[k]!=3)&&(type[k]!=2))
-			{
-				k++;
-			}
-			l=k-i;
-			for (int j=0;j<l;j++)
-				str[j]=s[i+j];
-			str[l]='\0';
-			number=GetNumber(str);	
-			i+=l;
-			
-			res[m]=number;
-			m++;
-		}
-		else
-			i++;
-	}
-}
-
 double GetNumber(char *s)//получение числа из char
 {
 	double res=atof(s);
@@ -341,7 +277,7 @@ void ConvertInPostfixNotation(const char* s,char *res)//перевод в постфиксную за
 	int type[256];
 	for (int i=0;i<len;i++)
 		type[i]=DeterminationType(s[i]);
-	int j=0;
+	int j=0; int m=0;
 	for(int i=0;i<len;i++)
 	{
 		if(s[i]=='(')
@@ -372,11 +308,33 @@ void ConvertInPostfixNotation(const char* s,char *res)//перевод в постфиксную за
 				sg.Include(s[i]);
 			}
 		}
-		if ((type[i]==1)||(type[i]==2))
+		if (type[i]==1)
+		{
+			if ((type[i+1]==1)||(type[i+1]==4))
+			{
+				res[j]=s[i];
+				j++;
+			}
+			else
+			{
+				res[j]=s[i];
+				j++;
+				res[j]=' ';
+				j++;
+			}
+		}
+		if (type[i]==2)
 		{
 			res[j]=s[i];
 			j++;
-		}	
+			res[j]=' ';
+			j++;
+		}
+		if (type[i]==4)
+		{
+			res[j]=s[i];
+			j++;
+		}
 	}
 	while(sg.CheckEmpty()!=true)
 	{
@@ -386,13 +344,13 @@ void ConvertInPostfixNotation(const char* s,char *res)//перевод в постфиксную за
 	res[j]='\0';
 }
 
-double EvaluationOfExpression(char *s,double *arr)//вычисление выражения
+
+double EvaluationOfExpression(char *s)//вычисление выражения
 {
 	TStack <char> op(256);
 	TStack <double> num(256);
 	int len=strlen(s);
-	int i=0;
-	int k=0;
+	int l=0; int i=0; int m=0;
 	double res;
 	int type[256];
 	for (int j=0;j<len;j++)
@@ -402,15 +360,20 @@ double EvaluationOfExpression(char *s,double *arr)//вычисление выражения
 		if(type[i]==1)
 		{ 
 			char str[256];
-			str[0]=s[i];
-			str[1]='\0';
-			int k=atoi(str);
-			double number=arr[k];	
+			int k=0;
+			double number;	
+			m=i;
+			while(s[m]!=' ')
+			{
+				str[k]=s[m];
+				m++;
+				k++;
+			}
+			str[k]='\0';
+			l=m-i+1;
+			number=GetNumber(str);
 			num.Include(number);
-		}
-		if(type[i]==2)
-		{
-			num.Include(s[i]);
+			i=i+l-1;
 		}
 		if (IsOperation(s[i]))
 		{
@@ -463,3 +426,6 @@ double EvaluationOfExpression(char *s,double *arr)//вычисление выражения
 	}
 	return num.Exclude();
 }
+
+
+

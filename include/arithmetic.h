@@ -24,11 +24,12 @@ bool IsSign(char s);
 bool IsOperation(char s);
 void FindVars (const char *s, int * res);
 void InputValues(char *s);
-void ChangeOperand(const char *s,char *res);
-void ArrayOfNumbers(const char *s,double *res);
+//void ChangeOperand(const char *s,char *res);
+//void ArrayOfNumbers(const char *s,double *res);
 double GetNumber(char *s);
 
 void ConvertInPostfixNotation(const char* s,char *res);
-double EvaluationOfExpression(char *s,double *arr);
+double EvaluationOfExpression(char *s);
 
 #endif
+
