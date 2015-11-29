@@ -83,6 +83,42 @@ bool ThereIsUnaryMinus(char *s)// проверка на наличие унарного минуса
 	else 
 		return false;
 }
+void ReplacementPointToCommaInDouble(char *s)
+{
+	int len = strlen(s);
+	int type[256];
+	for (int i=0;i<len;i++)
+		type[i]=DeterminationType(s[i]);
+	for (int i=0;i<len;i++)
+	{
+		if (type[i]==4)
+		{
+			if (s[i]=='.')
+				s[i]=',';
+		}
+	}
+}
+
+bool ThereAreVars(char *s)
+{
+	int flag=0;
+	int len = strlen(s);
+	int type[256];
+	for (int i=0;i<len;i++)
+		type[i]=DeterminationType(s[i]);
+	for (int i=0;i<len;i++)
+	{
+		if(type[i]==2)
+		{
+			flag=1;
+			break;
+		}
+	}
+	if (flag==1)
+		return true;
+	else 
+		return false;
+}
 bool CheckBrackets(char* s)//проверка расставлени€ скобок
 {
 	TStack<int> br(256);
@@ -130,19 +166,33 @@ bool CheckBrackets(char* s)//проверка расставлени€ скобок
 }
 bool CheckAmountOperands(char* s)// проверка на недостаток операндов
 {
+	int flag=1;
 	int len=strlen(s);
+	for (int i=1;i<len-1;i++)
+	{
+		if(IsOperation(s[i]))
+			if((s[i-1]=='(')||(s[i+1]==')'))
+			{
+				cout<< "Ќедостаток операндов на позиции є  " << i+1 << endl;
+				flag=0;
+				break;
+			}
+	}
 	if (IsOperation(s[0]))
 	{
 		cout<< "Ќедостаток операндов на позиции є 1 " << endl;
-		return false;
+		flag=0;
 	}
 	else if (IsOperation(s[len-1]))
 	{
 			cout<< "Ќедостаток операндов на позиции є " << len << endl;
-			return false;
+			flag=0;
 	}
-	else
+	if(flag==1)
 		return true;
+	else 
+		return false;
+
 }
 bool CheckOperationsInRow(char *s)//проверка на кол-во операций подр€д
 {

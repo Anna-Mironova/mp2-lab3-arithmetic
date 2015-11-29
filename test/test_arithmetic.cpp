@@ -250,3 +250,14 @@ TEST(Arithmetic,can_calculate_expression_without_brackets)
 	res=EvaluationOfExpression(newstr);
 	EXPECT_EQ(26,res);	
 }
+TEST(Arithmetic,can_replacement_point_to_comma)
+{
+	char str[]="5.2";
+	ReplacementPointToCommaInDouble(str);
+	EXPECT_EQ(',',str[1]);	
+}
+TEST(Arithmetic,can_identify_vars)
+{
+	char str[]="(5*a)+2";
+	EXPECT_TRUE(ThereAreVars(str));
+}

@@ -25,7 +25,6 @@ class TStack
 		ValType Get();                          // извлечь элемент без удаления
 		bool CheckFull() const;                 //проверка на переполнение
 		bool CheckEmpty() const;                //проверка на пустоту
-		void Clear();                           //очистить стек
 				
 		// вывод
   friend ostream& operator<<(ostream &out, const TStack &v)
@@ -116,9 +115,5 @@ bool TStack<ValType>::CheckEmpty() const //проверка на пустоту
 	else
 		return false;
 }
-template <class ValType>
-void TStack<ValType>::Clear() //очистить стек
-{
-	Top=-1;
-}
+
 #endif

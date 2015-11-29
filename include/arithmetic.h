@@ -13,6 +13,8 @@ using namespace std;
 int DeterminationType(char s);
 void ProcessingUnaryMinus(char *s,char *res);
 bool ThereIsUnaryMinus(char *s);
+void ReplacementPointToCommaInDouble(char *s);
+bool ThereAreVars(char *s);
 
 bool CheckBrackets(char* s) ;
 bool CheckAmountOperands(char* s);
