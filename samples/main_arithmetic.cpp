@@ -13,6 +13,9 @@ int main()
 	newstr = new char [Size];
 	while (flag1==1)
 	{
+		cout << " алькул€тор,выполн€ющий вычисление арифметического выражени€ с вещественными числами." <<endl;
+		cout << "¬ыражение в качестве операндов может содержать переменные и вещественные числа(точка раздел€ет целую и дробную части), в том числе и отрицательные." <<endl;
+		cout << "ƒопустимые операции : +, -, /, *, ^. " <<endl;
 		cout << "¬ведите выражение : ";
 		gets(str);
 		if(ThereIsUnaryMinus(str))
@@ -38,7 +41,6 @@ int main()
 			newstr1 = new char [Size];
 			newstr2 = new char [Size];
 			ConvertInPostfixNotation(newstr,newstr1);
-			cout << newstr1 << endl;
 			while (flag2==1)
 			{
 				InputValues(newstr1,newstr2);

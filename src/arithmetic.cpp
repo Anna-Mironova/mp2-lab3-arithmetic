@@ -401,7 +401,7 @@ void ConvertInPostfixNotation(const char* s,char *res)//перевод в постфиксную за
 					res[j]=sg.Exclude();
 					j++;
 					if (sg.CheckEmpty()!=true)
-						op=sg.Exclude();
+						op=sg.Get();
 					else 
 						op='(';
 				}
