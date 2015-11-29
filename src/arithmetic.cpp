@@ -17,6 +17,72 @@ int DeterminationType(char s) //type1-цифра; type2-буква ; type3-знаки операций 
 		return 0;
 }
 
+void ProcessingUnaryMinus(char *s,char *res) //обработка унарного минуса
+{
+	int len = strlen(s);
+	int j=0;
+	int type[256];
+	for (int i=0;i<len;i++)
+		type[i]=DeterminationType(s[i]);
+	if (s[0]=='-')
+	{
+		res[j]='0';
+		j++;
+		res[j]='-';
+		j++;
+	}
+	else
+	{
+		res[j]=s[0];
+		j++;
+	}
+	for (int i=1;i<len;i++)
+	{
+		if (s[i]=='-')
+		{
+			if((s[i-1]=='(')&&((type[i+1]==1)||(type[i+1]==2)))
+			{
+				res[j]='0';
+				j++;
+				res[j]='-';
+				j++;
+			}
+		}
+		else
+		{
+			res[j]=s[i];
+			j++;
+		}
+	}
+	res[j]='\0';
+}
+bool ThereIsUnaryMinus(char *s)// проверка на наличие унарного минуса
+{
+	int i=1;
+	int flag=0;
+	int len = strlen(s);
+	int type[256];
+	for (int j=0;j<len;j++)
+		type[j]=DeterminationType(s[j]);
+	if (s[0]=='-')
+		flag =1;
+	while(s[i]!='\0')
+	{
+		if (s[i]=='-')
+		{
+			if((s[i-1]=='(')&&((type[i+1]==1)||(type[i+1]==2)))
+			{
+				flag=1;
+				break;
+			}
+		}
+		i++;
+	}
+	if (flag==1)
+		return true;
+	else 
+		return false;
+}
 bool CheckBrackets(char* s)//проверка расставлени€ скобок
 {
 	TStack<int> br(256);
@@ -235,32 +301,63 @@ void FindVars (const char *s, int * res)//нахождение переменных в формуле
 		}
 }
 
-void InputValues(char *s) //функци€ дл€ ввода значений переменных
+void InputValues(char *s, char *res) //функци€ дл€ ввода значений переменных
 {
 	int *num;
 	int Size=256;
-	int i=1;
+	int i=0; int m=0;
+	int len=strlen(s);
 	num=new int[Size];
 	for (int j=0;j<Size;j++)
-		num[j]=0;
+		num[j]=-1;
 	FindVars(s,num);
-	int len=strlen(s);
-	cout << "¬ведите значени€ переменных" <<endl;
-	if (num[0]==0)
+	if (num[0]!=-1)
+		cout << "¬ведите значени€ переменных" <<endl;
+	for (int p=0;p<len;p++)
 	{
-		cout << s[num[0]]<< "=";
-		cin >> s[num[0]];
-		cout <<endl;
+		if (num[i]!=p)
+		{
+			res[m]=s[p];
+			m++;
+		}
+		else
+		{
+			char str[256];
+			int j=0;
+			cout << s[num[i]]<< "=";
+			gets(str);
+			if(str[0]=='-')
+			{
+				res[m]='0';
+				m++;
+				res[m]=' ';
+				m++;
+				j=1;
+				while (str[j]!='\0')
+				{
+					res[m]=str[j];
+					m++;
+					j++;
+				}
+				res[m]=' ';
+				m++;
+				res[m]='-';
+				m++;
+				p++;
+			}
+			else
+			{
+				while (str[j]!='\0')
+				{
+					res[m]=str[j];
+					m++;
+					j++;
+				}
+			}
+			i++;
+		}		
 	}
-	else 
-		i=0;
-	while (num[i]!=0)
-	{
-		cout << s[num[i]]<< "=";
-		cin >> s[num[i]];
-		cout <<endl;
-		i++;
-	}
+	res[m]='\0';
 	delete []num;
 }
 
@@ -303,7 +400,10 @@ void ConvertInPostfixNotation(const char* s,char *res)//перевод в постфиксную за
 				{
 					res[j]=sg.Exclude();
 					j++;
-					op=sg.Exclude();
+					if (sg.CheckEmpty()!=true)
+						op=sg.Exclude();
+					else 
+						op='(';
 				}
 				sg.Include(s[i]);
 			}

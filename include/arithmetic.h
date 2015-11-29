@@ -11,6 +11,8 @@
 using namespace std;
 
 int DeterminationType(char s);
+void ProcessingUnaryMinus(char *s,char *res);
+bool ThereIsUnaryMinus(char *s);
 
 bool CheckBrackets(char* s) ;
 bool CheckAmountOperands(char* s);
@@ -23,9 +25,7 @@ int Prioritet(char s);
 bool IsSign(char s);
 bool IsOperation(char s);
 void FindVars (const char *s, int * res);
-void InputValues(char *s);
-//void ChangeOperand(const char *s,char *res);
-//void ArrayOfNumbers(const char *s,double *res);
+void InputValues(char *s,char *res);
 double GetNumber(char *s);
 
 void ConvertInPostfixNotation(const char* s,char *res);
