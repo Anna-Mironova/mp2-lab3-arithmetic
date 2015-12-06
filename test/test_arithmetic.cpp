@@ -44,9 +44,14 @@ TEST(Arithmetic,can_check_correctness_of_symbols)
 	char str[]="5+2&a*b";
 	EXPECT_TRUE(!CheckCorrectnessOfSymbols(str));
 }
+TEST(Arithmetic,can_check_amount_of_letters_in_vars)
+{
+	char str[]="5+ab";
+	EXPECT_TRUE(!CheckAmountLettersaInVars(str));
+}
 TEST(Arithmetic,can_check_str_at_all)
 {
-	char str[]="(5+2&a*b*";
+	char str[]="(5+2&a*bc*";
 	EXPECT_TRUE(!CheckStr(str));
 }
 

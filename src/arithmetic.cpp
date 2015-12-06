@@ -250,7 +250,7 @@ bool CheckCorrectnessOfSymbols(char *s)//проверка на наличие некорректных символ
 	for (int i=0;i<len;i++)
 		if(type[i]==0)
 		{
-			cout << "Неопознанный символ" <<endl;
+			cout << "Неопознанный символ на позиции № " << i+1 <<endl;
 			flag=1;
 			break;
 		}
@@ -258,11 +258,29 @@ bool CheckCorrectnessOfSymbols(char *s)//проверка на наличие некорректных символ
 		return false;
 	else
 		return true;
-
+}
+bool CheckAmountLettersaInVars(char *s)//проверка на количество букв в переменных
+{
+	int len = strlen(s);
+	int flag=0;
+	int type[256];
+	for (int i=0;i<len;i++)
+		type[i]=DeterminationType(s[i]);
+	for (int i=0;i<len-1;i++)
+		if((type[i]==2)&&(type[i+1]==2))
+		{
+			cout << "Название переменной содержит больше, чем одну букву № " << i+1 <<endl;
+			flag=1;
+			break;
+		}
+	if (flag==1)
+		return false;
+	else
+		return true;
 }
 bool CheckStr(char* s)//проверка всех условий 
 {
-	if((CheckBrackets(s))&&(CheckAmountOperands(s))&&(CheckOperationsInRow(s))&&(CheckPlaceDotsOrCommas(s))&&(CheckCorrectnessOfSymbols(s)))
+	if((CheckBrackets(s))&&(CheckAmountOperands(s))&&(CheckOperationsInRow(s))&&(CheckPlaceDotsOrCommas(s))&&(CheckCorrectnessOfSymbols(s))&&(CheckAmountLettersaInVars(s)))
 		return true;
 	else
 		return false;
@@ -350,12 +368,43 @@ void FindVars (const char *s, int * res)//нахождение переменных в формуле
 			j++;
 		}
 }
-
+bool CheckCorrecnessOfValuesOfVars(char *s)
+{
+	int flag=0;
+	int len = strlen(s);
+	int type[256];
+	for (int i=0;i<len;i++)
+		type[i]=DeterminationType(s[i]);
+	if ((IsSign(s[0]))&&(s[0]!='-'))
+		flag=1;
+	for (int i=0;i<len;i++)
+	{
+		if((type[i]==0)||(type[i]==2)||(type[i]==5))
+		{
+			flag=1;
+			break;
+		}	
+	}
+	for (int i=1;i<len;i++)
+	{
+		if(type[i]==3)
+		{
+			flag=1;
+			break;
+		}	
+	}
+	if (CheckPlaceDotsOrCommas(s)!=true)
+		flag=1;
+	if (flag==0)
+		return true;
+	else 
+		return false;
+}
 void InputValues(char *s, char *res) //функция для ввода значений переменных
 {
 	int *num;
 	int Size=256;
-	int i=0; int m=0;
+	int i=0; int m=0; 
 	int len=strlen(s);
 	num=new int[Size];
 	for (int j=0;j<Size;j++)
@@ -372,36 +421,48 @@ void InputValues(char *s, char *res) //функция для ввода значений переменных
 		}
 		else
 		{
+			int flag=1;
 			char str[256];
 			int j=0;
-			cout << s[num[i]]<< "=";
-			gets(str);
-			if(str[0]=='-')
+			while (flag==1)
 			{
-				res[m]='0';
-				m++;
-				res[m]=' ';
-				m++;
-				j=1;
-				while (str[j]!='\0')
+				cout << s[num[i]]<< "=";
+				gets(str);
+				if (CheckCorrecnessOfValuesOfVars(str)!=true)
 				{
-					res[m]=str[j];
-					m++;
-					j++;
+					cout << "Значение некорректно! Введите значение заново " <<endl;
 				}
-				res[m]=' ';
-				m++;
-				res[m]='-';
-				m++;
-				p++;
-			}
-			else
-			{
-				while (str[j]!='\0')
+				else
 				{
-					res[m]=str[j];
-					m++;
-					j++;
+					if(str[0]=='-')
+					{
+						res[m]='0';
+						m++;
+						res[m]=' ';
+						m++;
+						j=1;
+						while (str[j]!='\0')
+						{
+							res[m]=str[j];
+							m++;
+							j++;
+						}
+						res[m]=' ';
+						m++;
+						res[m]='-';
+						m++;
+						p++;
+					}
+					else
+					{
+						while (str[j]!='\0')
+						{
+							res[m]=str[j];
+							m++;
+							j++;
+						}
+					}
+					flag=0;
 				}
 			}
 			i++;
@@ -497,7 +558,6 @@ void ConvertInPostfixNotation(const char* s,char *res)//перевод в постфиксную за
 
 double EvaluationOfExpression(char *s)//вычисление выражения
 {
-	TStack <char> op(256);
 	TStack <double> num(256);
 	int len=strlen(s);
 	int l=0; int i=0; int m=0;
@@ -576,6 +636,3 @@ double EvaluationOfExpression(char *s)//вычисление выражения
 	}
 	return num.Exclude();
 }
-
-
-

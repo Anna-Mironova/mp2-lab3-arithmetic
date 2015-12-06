@@ -21,12 +21,14 @@ bool CheckAmountOperands(char* s);
 bool CheckOperationsInRow(char *s);
 bool CheckPlaceDotsOrCommas(char *s);
 bool CheckCorrectnessOfSymbols(char *s);
+bool CheckAmountLettersaInVars(char *s);
 bool CheckStr(char *s);
 
 int Prioritet(char s);
 bool IsSign(char s);
 bool IsOperation(char s);
 void FindVars (const char *s, int * res);
+bool CheckCorrecnessOfValuesOfVars(char *s);
 void InputValues(char *s,char *res);
 double GetNumber(char *s);
 
