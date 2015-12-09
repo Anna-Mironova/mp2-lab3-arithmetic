@@ -36,7 +36,7 @@ void ProcessingUnaryMinus(char *s,char *res) //обработка унарного минуса
 		res[j]=s[0];
 		j++;
 	}
-	for (int i=1;i<len;i++)
+	for (int i=1;i<len-1;i++)
 	{
 		if (s[i]=='-')
 		{
@@ -54,6 +54,8 @@ void ProcessingUnaryMinus(char *s,char *res) //обработка унарного минуса
 			j++;
 		}
 	}
+	res[j++]=s[len-1];
+
 	res[j]='\0';
 }
 bool ThereIsUnaryMinus(char *s)// проверка на наличие унарного минуса
@@ -64,6 +66,7 @@ bool ThereIsUnaryMinus(char *s)// проверка на наличие унарного минуса
 	int type[256];
 	for (int j=0;j<len;j++)
 		type[j]=DeterminationType(s[j]);
+	type[len] = 0;
 	if (s[0]=='-')
 		flag =1;
 	while(s[i]!='\0')
@@ -198,7 +201,7 @@ bool CheckOperationsInRow(char *s)//проверка на кол-во операций подряд
 {
 	int len=strlen(s);
 	int flag=0;
-	for (int i=0;i<len;i++)
+	for (int i=0;i<len-1;i++)
 	{
 		if (IsOperation(s[i]))
 		{
@@ -293,32 +296,26 @@ int Prioritet(char s)//приоритет операций
 	case '(' :
 		{
 			return 0;
-			break;
 		}
 	case '+':
 		{
 			return 1;
-			break;
 		}
 	case '-':
 		{
 			return 1;
-			break;
 		}
 	case '*':
 		{
 			return 2;
-			break;
 		}
 	case '/':
 		{
 			return 2;
-			break;
 		}
 	case '^':
 		{
 			return 3;
-			break;
 		}
 	}
 }
