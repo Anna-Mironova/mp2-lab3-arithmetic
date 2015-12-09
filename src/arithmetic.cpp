@@ -24,6 +24,7 @@ void ProcessingUnaryMinus(char *s,char *res) //обработка унарного минуса
 	int type[256];
 	for (int i=0;i<len;i++)
 		type[i]=DeterminationType(s[i]);
+	type[len]=0;
 	if (s[0]=='-')
 	{
 		res[j]='0';
@@ -36,7 +37,7 @@ void ProcessingUnaryMinus(char *s,char *res) //обработка унарного минуса
 		res[j]=s[0];
 		j++;
 	}
-	for (int i=1;i<len-1;i++)
+	for (int i=1;i<len;i++)
 	{
 		if (s[i]=='-')
 		{
@@ -54,8 +55,6 @@ void ProcessingUnaryMinus(char *s,char *res) //обработка унарного минуса
 			j++;
 		}
 	}
-	res[j++]=s[len-1];
-
 	res[j]='\0';
 }
 bool ThereIsUnaryMinus(char *s)// проверка на наличие унарного минуса
@@ -424,7 +423,7 @@ void InputValues(char *s, char *res) //функция для ввода значений переменных
 			while (flag==1)
 			{
 				cout << s[num[i]]<< "=";
-				gets(str);
+				gets_s(str);
 				if (CheckCorrecnessOfValuesOfVars(str)!=true)
 				{
 					cout << "Значение некорректно! Введите значение заново " <<endl;
